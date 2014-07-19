@@ -7,7 +7,7 @@
 
 ```sh
 $ cd critical-path-angular-demo
-$ npm install
+$ npm install && bower install
 ```
 
 ## Usage
