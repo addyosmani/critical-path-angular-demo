@@ -4,6 +4,13 @@
 
 Compare the [normal](http://addyosmani.github.io/critical-path-angular-demo/output/normal/) output with the [critical-path CSS optimized](http://addyosmani.github.io/critical-path-angular-demo/output/critical/) version.
 
+PageSpeed results for before:
+
+![](http://i.imgur.com/1Vv4IoZ.png)
+
+and after:
+
+![](http://i.imgur.com/dM8a0qn.png)
 
 ## Installation
 
