@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var critical = require('critical');
 
 var $ = require('gulp-load-plugins')();
 var saveLicense = require('uglify-save-license');
@@ -48,7 +49,7 @@ gulp.task('html', ['styles', 'scripts', 'partials'], function () {
       addPrefix: '../'
     }))
     .pipe($.useref.assets())
-    .pipe($.rev())
+    //.pipe($.rev())
     .pipe(jsFilter)
     .pipe($.ngmin())
     .pipe($.uglify({preserveComments: saveLicense}))
@@ -59,7 +60,7 @@ gulp.task('html', ['styles', 'scripts', 'partials'], function () {
     .pipe(cssFilter.restore())
     .pipe($.useref.restore())
     .pipe($.useref())
-    .pipe($.revReplace())
+    //.pipe($.revReplace())
     .pipe(gulp.dest('dist'))
     .pipe($.size());
 });
@@ -82,6 +83,30 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/fonts'))
     .pipe($.size());
 });
+
+// Additiona for critical-path CSS
+
+gulp.task('copystyles', function () {
+    return gulp.src(['dist/styles/main.css'])
+        .pipe($.rename({
+            basename: "site" // site.css
+        }))
+        .pipe(gulp.dest('dist/styles'));
+});
+
+gulp.task('critical', ['build', 'copystyles'], function () {
+    critical.generateInline({
+        base: 'dist/',
+        src: 'index.html',
+        styleTarget: 'styles/main.css',
+        htmlTarget: 'index.html',
+        width: 320,
+        height: 480,
+        minify: true
+    });
+});
+
+// end additions
 
 gulp.task('clean', function () {
   return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
